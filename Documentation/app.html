@@ -1,0 +1,82 @@
+<!-- HTML generated using hilite.me -->
+        <div style="background: #f5f5f5; overflow:auto;width:auto;border:solid gray;border-width:0px;padding:1.6em;"><pre style="margin: 0; line-height: 125%">
+            import React, { Component, Suspense } from "react";
+            import Layout from "./components/Layout/";
+            import {
+              Route,
+              Switch,
+              BrowserRouter as Router,
+              withRouter,
+            } from "react-router-dom";
+
+            // Import Css
+            import "./assets/css/materialdesignicons.min.css";
+            import "./Apps.scss";
+
+            import "./assets/css/colors/default.css";
+
+            // Include Routes
+            import routes from "./routes";
+
+            function withLayout(WrappedComponent) {
+              // ...and returns another component...
+              return class extends React.Component {
+                render() {
+                  return (
+                    &lt;Layout>
+                      &lt;WrappedComponent>&lt;/WrappedComponent>
+                    &lt;/Layout>
+                  );
+                }
+              };
+            }
+
+            class App extends Component {
+              Loader = () => {
+                return (
+                  &lt;div id="preloader">
+                    &lt;div id="status">
+                      &lt;div className="spinner">
+                        &lt;div className="double-bounce1">&lt;/div>
+                        &lt;div className="double-bounce2">&lt;/div>
+                      &lt;/div>
+                    &lt;/div>
+                  &lt;/div>
+                );
+              };
+              render() {
+                return (
+                  &lt;React.Fragment>
+                    &lt;Router>
+                      &lt;Suspense fallback={this.Loader()}>
+                        &lt;Switch>
+                          {routes.map((route, idx) =>
+                            route.isWithoutLayout ? (
+                              &lt;Route
+                                path={route.path}
+                                exact={route.exact}
+                                component={route.component}
+                                key={idx}
+                              />
+                            ) : (
+                              &lt;Route
+                                path={route.path}
+                                exact
+                                component={withLayout(route.component)}
+                                key={idx}
+                              />
+                            )
+                          )}
+                        &lt;/Switch>
+                      &lt;/Suspense>
+                    &lt;/Router>
+                  &lt;/React.Fragment>
+                );
+              }
+            }
+
+            export default withRouter(App);
+
+
+          </pre>
+        </div>
